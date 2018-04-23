@@ -23,6 +23,9 @@ public class SubCategoriesList : MonoBehaviour {
 	//url consulta url img
 	string get_Category_img = "https://kapta.biz/pproducto/get_url_img_category.php";
 
+	//url consulta url name
+	string get_name = "https://kapta.biz/pproducto/get_name_category.php";
+
 	//url para consultar preguntas a partir de id categoria
 	string get_questions = "https://kapta.biz/pproducto/get_questions.php";
 
@@ -31,6 +34,9 @@ public class SubCategoriesList : MonoBehaviour {
 
 	//variable para recibir preguntas
 	public string getquestion;
+
+	//variable para recibir nombre
+	public string getname;
 
 	//variable para mantener array de preguntas
 	public static List<int> questionPres = new List<int>();
@@ -61,51 +67,44 @@ public class SubCategoriesList : MonoBehaviour {
 	//auxiliar numero categorias
 	public int auxCat;
 
+	public static int int_static_actual__id=1;
 
 	IEnumerator Start()
 	{
 
+		Debug.Log ("ID INICIAL/ACTUAL" + SubCategoriesList.int_static_actual__id);
+
 		//capturo longitud categorias
 		cantCategorias = ListaCategorias.cantCategorias;
 
-
-		Debug.Log ("EMPTY INICIAL" + questionPres.Count);
+		//Debug.Log ("EMPTY INICIAL" + questionPres.Count);
 
 		WWW abc = new WWW (url_img_subc);
 		yield return abc;
 
-		//AQUI ESTA EL ERROR
 
 		//capturo id categoria
 		if (SubCategoriesList.static_category_id == null) {
 			//Debug.Log ("PRIMERA VEZ " + SubCategoriesList.static_category_id);
-			category_id = SceneManagerScript.Value.ToString ();
-			static_category_id = category_id;
+			category_id = SubCategoriesList.int_static_actual__id.ToString();
+
+			//si es enviada desde subcategoria o desde categorias
+			if (static_actual__id != null) {
+				static_category_id = static_actual__id;
+			} else {
+				static_category_id = category_id;
+			}
+
 			GetUrlImg (category_id);
 			//Debug.Log ("ENVIADO PRIMERA VEZ " + static_category_id);
 
 		} else {
 			Debug.Log ("MAS 1 VEZ " + SubCategoriesList.static_category_id);
-			category_id = SceneManagerScript.Value.ToString ();
+			category_id = SubCategoriesList.int_static_actual__id.ToString();
 			GetUrlImg (category_id);
 		}
 
-		//si la variable static no ha sido enviada se despliega con la enviada desde categoria, si no con la enviada desde este script y se setea
-		if (SubCategoriesList.static_category_name == null) {
 
-			CatTxt.text = SceneManagerScript.CategoryValue.ToString ();
-			//Capturo categoria
-			category_name = SceneManagerScript.CategoryValue.ToString();
-			static_category_name = category_name;
-			Debug.Log ("NAME CAPTURADA" + category_name);
-
-
-		} else {
-			
-			CatTxt.text = SceneManagerScript.CategoryValue.ToString ();
-			category_name = SubCategoriesList.static_category_name;
-
-		}
 
 	}
 
@@ -117,6 +116,10 @@ public class SubCategoriesList : MonoBehaviour {
 	}
 
 
+
+
+
+
 	/*--------------- CAPTURA IMAGEN A PARTIR DE ID CATEGORIA----------------------*/
 
 	public void GetUrlImg(string catid)
@@ -124,11 +127,25 @@ public class SubCategoriesList : MonoBehaviour {
 		
 		WWWForm form = new WWWForm ();
 		form.AddField ("idPost", catid);
+
 		WWW getwww = new WWW (get_Category_img, form);
 		WWW getwwwquestion = new WWW (get_questions, form);
+		WWW getwwwName = new WWW (get_name, form);
 
 		StartCoroutine (QuestionRequest (getwwwquestion));
 		StartCoroutine (WaitForRequest (getwww, getwwwquestion));
+		StartCoroutine (NameRequest (getwwwName));  
+
+	}
+
+
+	IEnumerator NameRequest(WWW getwwwname)
+	{
+		yield return getwwwname;
+		getname = getwwwname.text;
+
+		CatTxt.text = getname;
+
 
 	}
 
@@ -193,7 +210,9 @@ public class SubCategoriesList : MonoBehaviour {
 					Debug.Log ("GRACIAS POR RESPONDER");
 					SceneManager.LoadScene ("Gracias");
 				} else {
-					SceneManager.LoadScene ("Categories");
+					int_static_actual__id = int_static_actual__id + 1;
+					SceneManager.LoadScene("subcategories");
+					Debug.Log("BART " + int_static_actual__id);
 				}
 
 				num = 0;
