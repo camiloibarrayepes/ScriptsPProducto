@@ -62,7 +62,7 @@ public class SubCategoriesList : MonoBehaviour {
 	public Text CatTxt;
 
 	//variable posicion
-	public static int num;
+	public static int num=0;
 
 	//limite array preguntas
 	public int limit;
@@ -96,32 +96,25 @@ public class SubCategoriesList : MonoBehaviour {
 
 		//capturo id categoria
 		if (static_category_id == 1) {
-			//Debug.Log ("PRIMERA VEZ " + SubCategoriesList.static_category_id);
 			category_id = 1;
-
-			GetUrlImg (category_id);
-
 		} else {
-			
 			category_id = SubCategoriesList.static_category_id;
-			GetUrlImg (category_id);
 		}
 
+		GetAction (category_id);
 
 
 	}
 
 	private void Awake()
 	{
-
 		DontDestroyOnLoad (gameObject);
-
 	} 
 
 
-	/*--------------- CAPTURA IMAGEN A PARTIR DE ID CATEGORIA----------------------*/
 
-	public void GetUrlImg(int catid)
+
+	public void GetAction(int catid)
 	{
 		
 		WWWForm form = new WWWForm ();
@@ -132,38 +125,58 @@ public class SubCategoriesList : MonoBehaviour {
 		WWW getwwwOptions = new WWW (get_options, form);
 
 
-		StartCoroutine (NameRequest (getwwwName)); 
-		StartCoroutine (OptionsRequest (getwwwOptions)); 
-		StartCoroutine (QuestionRequest (getwwwquestion));
 
-
+		StartCoroutine (QuestionRequest (getwwwquestion, getwwwOptions, getwwwName));
 	}
 
 
-	IEnumerator NameRequest(WWW getwwwname)
-	{
-		yield return getwwwname;
-		getname = getwwwname.text;
-		CatTxt.text = getname;
-
-	}
 
 
 	/*--------------- CAPTURA PREGUNTAS A PARTIR DE ID CATEGORIA----------------------*/
 
 
-	IEnumerator QuestionRequest(WWW getquestionwww)
+	IEnumerator QuestionRequest(WWW getquestionwww, WWW getwwwOptions, WWW getwwwname)
 	{
+
+		//Name
+		yield return getwwwname;
+		getname = getwwwname.text;
+		CatTxt.text = getname;
+
+		//Question
 		yield return getquestionwww;
 		getquestion = getquestionwww.text;
+
+		//Options
+		yield return getwwwOptions;
+		getoptions = getwwwOptions.text;
+		array_options = getoptions.Split (';');
+
+		//array_suboptions = array_options[num].Split (',');
+		//Debug.Log ("ARRAY OPTION NUM " + num);
+
+
+		/*op1.text = array_suboptions [0];
+		op2.text = array_suboptions [1];
+		op3.text = array_suboptions [2];*/
+
 
 		words = getquestion.Split (',');
 		limit = words.Length-1;
 
-
+		Debug.Log ("NUM " + num);
 		if (num == 0) {
+			Debug.Log ("ENTRA 1");
 			question.text = words [num];
+			array_suboptions = array_options[num].Split (',');
+			op1.text = array_suboptions [1];
+			op2.text = array_suboptions [2];
+			op3.text = array_suboptions [3];
+			Debug.Log("ID PREGUNTA" + array_suboptions [0]);
+
+			num = num + 1;
 		} else {
+			Debug.Log ("ENTRA 2");
 			if (num == limit) {
 				Debug.Log ("ACABO");
 				int camilo = arrayCategories.Count + 1;
@@ -181,9 +194,16 @@ public class SubCategoriesList : MonoBehaviour {
 				num = 0;
 
 			} else {
-				num = SubCategoriesList.num;
+				
 				Debug.Log ("NUMERO" + num);
 				question.text = words [num];
+
+				array_suboptions = array_options[num].Split (',');
+				op1.text = array_suboptions [1];
+				op2.text = array_suboptions [2];
+				op3.text = array_suboptions [3];
+				Debug.Log("ID PREGUNTA" + array_suboptions [0]);
+
 				questionPres.Add (num);
 				num = num + 1;
 			}
@@ -218,22 +238,6 @@ public class SubCategoriesList : MonoBehaviour {
 	/*-----------------------------------------------------------------*/
 
 
-	IEnumerator OptionsRequest(WWW getwwwOptions)
-	{
-		yield return getwwwOptions;
-		getoptions = getwwwOptions.text;
-		array_options = getoptions.Split (';');
-
-		if (num == 0) {
-			num = 1;
-		}
-
-		array_suboptions = array_options[num-1].Split (',');
-		op1.text = array_suboptions [0];
-		op2.text = array_suboptions [1];
-		op3.text = array_suboptions [2];
-
-	}
 
 
 	/*------------------------------ BUTTONS ---------------------------*/
