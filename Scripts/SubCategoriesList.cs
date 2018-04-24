@@ -15,6 +15,15 @@ public class SubCategoriesList : MonoBehaviour {
 	//para despligue de pregunta
 	public Text question;
 
+	//para despligue de opciones
+	public Text options;
+
+	//BOTONES PARA DESPLIGUE DE OPCIONES
+	public Text op1;
+	public Text op2;
+	public Text op3;
+
+
 	public Image image_subc;
 
 	//url prueba img
@@ -29,6 +38,10 @@ public class SubCategoriesList : MonoBehaviour {
 	//url para consultar preguntas a partir de id categoria
 	string get_questions = "https://kapta.biz/pproducto/get_questions.php";
 
+	//url consultar opciones
+	string get_options = "https://kapta.biz/pproducto/get_options_question.php";
+
+
 	//variable para recibir url
 	public string geturl;
 
@@ -37,6 +50,9 @@ public class SubCategoriesList : MonoBehaviour {
 
 	//variable para recibir nombre
 	public string getname;
+
+	//variable para recibir opciones de la pregunta
+	public string getoptions;
 
 	//variable para mantener array de preguntas
 	public static List<int> questionPres = new List<int>();
@@ -56,6 +72,11 @@ public class SubCategoriesList : MonoBehaviour {
 	public int limit;
 	//array preguntas
 	public string[] words;
+
+	//array opciones 1
+	public string[] array_options;
+	//array opciones 2
+	public string[] array_suboptions;
 
 
 	//variable para mantener array de preguntas
@@ -113,11 +134,7 @@ public class SubCategoriesList : MonoBehaviour {
 
 		DontDestroyOnLoad (gameObject);
 
-	}
-
-
-
-
+	} 
 
 
 	/*--------------- CAPTURA IMAGEN A PARTIR DE ID CATEGORIA----------------------*/
@@ -131,10 +148,13 @@ public class SubCategoriesList : MonoBehaviour {
 		WWW getwww = new WWW (get_Category_img, form);
 		WWW getwwwquestion = new WWW (get_questions, form);
 		WWW getwwwName = new WWW (get_name, form);
+		WWW getwwwOptions = new WWW (get_options, form);
 
 		StartCoroutine (QuestionRequest (getwwwquestion));
-		StartCoroutine (WaitForRequest (getwww, getwwwquestion));
-		StartCoroutine (NameRequest (getwwwName));  
+		StartCoroutine (NameRequest (getwwwName)); 
+		StartCoroutine (OptionsRequest (getwwwOptions)); 
+
+
 
 	}
 
@@ -143,46 +163,25 @@ public class SubCategoriesList : MonoBehaviour {
 	{
 		yield return getwwwname;
 		getname = getwwwname.text;
-
 		CatTxt.text = getname;
 
-
 	}
 
-	IEnumerator WaitForRequest(WWW getwww, WWW getwwwquestion)
+	IEnumerator OptionsRequest(WWW getwwwOptions)
 	{
-		yield return getwww;
-		geturl = getwww.text;
+		yield return getwwwOptions;
+		getoptions = getwwwOptions.text;
+		array_options = getoptions.Split (';');
+		Debug.Log ("NUMERO AQUI " + num);
 
-		WWW www = new WWW (geturl);
-		yield return www;
-
-		yield return getwwwquestion;
-		getquestion = getwwwquestion.text;
-		getLongArrayQuestions (getquestion);
-
-
-		Debug.Log ("NUMEROIMAGE" + num + "Y LIMITE " + limit);
-
-		if ((num==null) || (num == 0)) {
-			image_subc.sprite = null;
-			num = 0;
-		} else {
-			image_subc.sprite = Sprite.Create (www.texture, new Rect (0, 0, www.texture.width, www.texture.height), new Vector2 (0, 0));
+		if (num == 0) {
+			num = 1;
 		}
-
-	}
-
-	public void getLongArrayQuestions(string getquestion)
-	{
-		//Encode para tildes y simbolos NOTA: no funciona aún
-		byte[] bytes = Encoding.Default.GetBytes (getquestion);
-		string mystring;
-		mystring = Encoding.UTF7.GetString (bytes);
-
-		//dividir las preguntas por cada ,
-		words = mystring.Split (',');
-		limit = words.Length-1;
+		array_suboptions = array_options[num-1].Split (',');
+		op1.text = array_suboptions [0];
+		op2.text = array_suboptions [1];
+		op3.text = array_suboptions [2];
+			
 	}
 
 
@@ -193,7 +192,8 @@ public class SubCategoriesList : MonoBehaviour {
 	{
 		yield return getquestionwww;
 		getquestion = getquestionwww.text;
-		getLongArrayQuestions (getquestion);
+		words = getquestion.Split (',');
+		limit = words.Length-1;
 
 
 		if (SubCategoriesList.num == null) {
@@ -205,6 +205,7 @@ public class SubCategoriesList : MonoBehaviour {
 				Debug.Log ("ACABO");
 
 				int camilo = arrayCategories.Count + 1;
+				Debug.Log ("ARRAYCATEGORIES " + arrayCategories.Count);
 
 				if (camilo == cantCategorias) {
 					Debug.Log ("GRACIAS POR RESPONDER");
@@ -247,17 +248,12 @@ public class SubCategoriesList : MonoBehaviour {
 			int ac = Int32.Parse (static_actual__id);
 			arrayCategories.Add (ac);
 
+
 		} else if (aux_actual_id == null) {
 			Debug.Log ("NO COMPARACION");
 		} else {
 			Debug.Log ("MISMA  CATEGORIA");
 		}
-
-
-
-
-
-
 
 	}
 

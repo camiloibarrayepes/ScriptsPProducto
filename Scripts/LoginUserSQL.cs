@@ -72,12 +72,12 @@ public class LoginUserSQL : MonoBehaviour {
 		} else if (userLogin == "denegado") {
 			editMessage ("Datos incorrectos");
 		} else {
-			string[] words = userLogin.Split (',');
+			string[] credentials = userLogin.Split (',');
 
-			var_access = words [1];
-			var_id = words [2];
-			var_name = words [3];
-			var_email = words [4];
+			var_access = credentials [1];
+			var_id = credentials [2];
+			var_name = credentials [3];
+			var_email = credentials [4];
 
 			if (var_access == "acceso") {
 				Debug.Log ("INGRESO CORRECTO");
