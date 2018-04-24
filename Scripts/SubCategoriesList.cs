@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class SubCategoriesList : MonoBehaviour {
 
 	private string category_name;
-	private string category_id;
+	private int category_id;
 
 	//para despligue de pregunta
 	public Text question;
@@ -26,11 +26,7 @@ public class SubCategoriesList : MonoBehaviour {
 
 	public Image image_subc;
 
-	//url prueba img
-	public string url_img_subc = "https://www.extremetech.com/wp-content/uploads/2018/01/BMW-CarPlay-Harman-640x353.jpg";
 
-	//url consulta url img
-	string get_Category_img = "https://kapta.biz/pproducto/get_url_img_category.php";
 
 	//url consulta url name
 	string get_name = "https://kapta.biz/pproducto/get_name_category.php";
@@ -59,8 +55,8 @@ public class SubCategoriesList : MonoBehaviour {
 
 	//variable para mantener id y nombre categoria
 	public static string static_category_name;
-	public static string static_category_id;
-	public static string static_actual__id;
+	public static int static_category_id=1;
+	public static int static_actual__id;
 
 	//captura nombre categoria desde categorias y despligue
 	public Text CatTxt;
@@ -90,38 +86,24 @@ public class SubCategoriesList : MonoBehaviour {
 
 	public static int int_static_actual__id=1;
 
-	IEnumerator Start()
+	void Start()
 	{
 
 		Debug.Log ("ID INICIAL/ACTUAL" + SubCategoriesList.int_static_actual__id);
 
 		//capturo longitud categorias
-		cantCategorias = ListaCategorias.cantCategorias;
-
-		//Debug.Log ("EMPTY INICIAL" + questionPres.Count);
-
-		WWW abc = new WWW (url_img_subc);
-		yield return abc;
-
+		cantCategorias = 5;
 
 		//capturo id categoria
-		if (SubCategoriesList.static_category_id == null) {
+		if (static_category_id == 1) {
 			//Debug.Log ("PRIMERA VEZ " + SubCategoriesList.static_category_id);
-			category_id = SubCategoriesList.int_static_actual__id.ToString();
-
-			//si es enviada desde subcategoria o desde categorias
-			if (static_actual__id != null) {
-				static_category_id = static_actual__id;
-			} else {
-				static_category_id = category_id;
-			}
+			category_id = 1;
 
 			GetUrlImg (category_id);
-			//Debug.Log ("ENVIADO PRIMERA VEZ " + static_category_id);
 
 		} else {
-			Debug.Log ("MAS 1 VEZ " + SubCategoriesList.static_category_id);
-			category_id = SubCategoriesList.int_static_actual__id.ToString();
+			
+			category_id = SubCategoriesList.static_category_id;
 			GetUrlImg (category_id);
 		}
 
@@ -139,21 +121,20 @@ public class SubCategoriesList : MonoBehaviour {
 
 	/*--------------- CAPTURA IMAGEN A PARTIR DE ID CATEGORIA----------------------*/
 
-	public void GetUrlImg(string catid)
+	public void GetUrlImg(int catid)
 	{
 		
 		WWWForm form = new WWWForm ();
 		form.AddField ("idPost", catid);
 
-		WWW getwww = new WWW (get_Category_img, form);
 		WWW getwwwquestion = new WWW (get_questions, form);
 		WWW getwwwName = new WWW (get_name, form);
 		WWW getwwwOptions = new WWW (get_options, form);
 
-		StartCoroutine (QuestionRequest (getwwwquestion));
+
 		StartCoroutine (NameRequest (getwwwName)); 
 		StartCoroutine (OptionsRequest (getwwwOptions)); 
-
+		StartCoroutine (QuestionRequest (getwwwquestion));
 
 
 	}
@@ -167,23 +148,6 @@ public class SubCategoriesList : MonoBehaviour {
 
 	}
 
-	IEnumerator OptionsRequest(WWW getwwwOptions)
-	{
-		yield return getwwwOptions;
-		getoptions = getwwwOptions.text;
-		array_options = getoptions.Split (';');
-		Debug.Log ("NUMERO AQUI " + num);
-
-		if (num == 0) {
-			num = 1;
-		}
-		array_suboptions = array_options[num-1].Split (',');
-		op1.text = array_suboptions [0];
-		op2.text = array_suboptions [1];
-		op3.text = array_suboptions [2];
-			
-	}
-
 
 	/*--------------- CAPTURA PREGUNTAS A PARTIR DE ID CATEGORIA----------------------*/
 
@@ -192,18 +156,16 @@ public class SubCategoriesList : MonoBehaviour {
 	{
 		yield return getquestionwww;
 		getquestion = getquestionwww.text;
+
 		words = getquestion.Split (',');
 		limit = words.Length-1;
 
 
-		if (SubCategoriesList.num == null) {
-			num = 0;
-			Debug.Log ("NUMERO" + num);
+		if (num == 0) {
 			question.text = words [num];
 		} else {
 			if (num == limit) {
 				Debug.Log ("ACABO");
-
 				int camilo = arrayCategories.Count + 1;
 				Debug.Log ("ARRAYCATEGORIES " + arrayCategories.Count);
 
@@ -211,9 +173,9 @@ public class SubCategoriesList : MonoBehaviour {
 					Debug.Log ("GRACIAS POR RESPONDER");
 					SceneManager.LoadScene ("Gracias");
 				} else {
-					int_static_actual__id = int_static_actual__id + 1;
+					static_category_id = static_category_id + 1;
 					SceneManager.LoadScene("subcategories");
-					Debug.Log("BART " + int_static_actual__id);
+					Debug.Log("BART " + static_category_id);
 				}
 
 				num = 0;
@@ -237,27 +199,44 @@ public class SubCategoriesList : MonoBehaviour {
 
 		//recibo de variable
 
-		string aux_actual_id = SubCategoriesList.static_actual__id;
+		int aux_actual_id = SubCategoriesList.static_category_id;
 
 		//Variable auxiliar para guardar ultimo id
 		static_actual__id = category_id;
 
 
-		if ((aux_actual_id != null) && (aux_actual_id != static_actual__id)) {
+		if (aux_actual_id != static_actual__id) {
 			Debug.Log ("DIFERENTE  CATEGORIA");
-			int ac = Int32.Parse (static_actual__id);
-			arrayCategories.Add (ac);
+			arrayCategories.Add (static_category_id);
 
-
-		} else if (aux_actual_id == null) {
-			Debug.Log ("NO COMPARACION");
 		} else {
 			Debug.Log ("MISMA  CATEGORIA");
 		}
 
 	}
 
-	/*-------------------- BUTTONS -------------------------*/
+	/*-----------------------------------------------------------------*/
+
+
+	IEnumerator OptionsRequest(WWW getwwwOptions)
+	{
+		yield return getwwwOptions;
+		getoptions = getwwwOptions.text;
+		array_options = getoptions.Split (';');
+
+		if (num == 0) {
+			num = 1;
+		}
+
+		array_suboptions = array_options[num-1].Split (',');
+		op1.text = array_suboptions [0];
+		op2.text = array_suboptions [1];
+		op3.text = array_suboptions [2];
+
+	}
+
+
+	/*------------------------------ BUTTONS ---------------------------*/
 
 	public void GoToSubCategories()
 	{
