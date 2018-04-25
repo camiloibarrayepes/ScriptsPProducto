@@ -10,8 +10,9 @@ using UnityEngine.SceneManagement;
 
 public class Pregunta
 {
-	public string id_question;
-	public string id_opcion;
+	public int id_question;
+	public string option;
+	public string question;
 }
 
 
@@ -119,28 +120,6 @@ public class SubCategoriesList : MonoBehaviour {
 		GetAction (category_id);
 
 
-		/*----------------------------------------*/
-
-		List<Pregunta> LPregunta = new List<Pregunta> {
-			new Pregunta{ id_question = "1", id_opcion = "1"},
-			new Pregunta{ id_question = "2", id_opcion = "2"},
-			new Pregunta{ id_question = "1", id_opcion = "1"}
-		};
-
-		for (int op = 0; op < 3; op++){
-			
-			foreach (var itemP in LPregunta)
-			{
-				GameObject _pregunta = Instantiate (prefabPregunta, contenedorPregunta);
-				_pregunta.GetComponent<DetallesPregunta> ().CrearPregunta (itemP);
-			}
-
-		}
-
-
-		/*----------------------------------------*/
-
-
 	}
 
 	private void Awake()
@@ -206,9 +185,32 @@ public class SubCategoriesList : MonoBehaviour {
 			Debug.Log ("ENTRA 1");
 			question.text = words [num];
 			array_suboptions = array_options[num].Split (',');
-			op1.text = array_suboptions [1];
-			op2.text = array_suboptions [2];
-			op3.text = array_suboptions [3];
+			int m = Int32.Parse (array_suboptions [0]);
+
+
+			/*----------------------------------------*/
+
+			Debug.Log ("DEBULOG " + array_suboptions.Length);
+			Debug.Log("LAPICERO " + array_suboptions [3]);
+
+			for (int i = 1; i < array_suboptions.Length; i++) {
+				
+					List<Pregunta> LPregunta = new List<Pregunta> {
+						new Pregunta{ question = array_suboptions [i], id_question = Int32.Parse (array_suboptions [0]) }
+					};
+				
+				if ((array_suboptions [i])!="") {
+					foreach (var itemP in LPregunta) {
+						GameObject _pregunta = Instantiate (prefabPregunta, contenedorPregunta);
+						_pregunta.GetComponent<DetallesPregunta> ().CrearPregunta (itemP);
+					}
+				}
+
+			}
+			/*----------------------------------------*/
+
+
+
 			Debug.Log("ID PREGUNTA" + array_suboptions [0]);
 
 			num = num + 1;
@@ -232,14 +234,30 @@ public class SubCategoriesList : MonoBehaviour {
 
 			} else {
 
-				Debug.Log ("NUMERO" + num);
+				Debug.Log ("NUMERO CAMILO" + num);
 				question.text = words [num];
-
 				array_suboptions = array_options[num].Split (',');
-				op1.text = array_suboptions [1];
-				op2.text = array_suboptions [2];
-				op3.text = array_suboptions [3];
-				Debug.Log("ID PREGUNTA" + array_suboptions [0]);
+				int m = Int32.Parse (array_suboptions [0]);
+
+				/*----------------------------------------*/
+
+				Debug.Log ("DEBULOG " + array_suboptions.Length);
+
+				for (int i = 1; i < array_suboptions.Length; i++) {
+					
+						List<Pregunta> LPregunta = new List<Pregunta> {
+							new Pregunta{ question = array_suboptions [i], id_question = Int32.Parse (array_suboptions [0]) }
+						};
+					
+					if ((array_suboptions [i])!="") {
+						foreach (var itemP in LPregunta) {
+							GameObject _pregunta = Instantiate (prefabPregunta, contenedorPregunta);
+							_pregunta.GetComponent<DetallesPregunta> ().CrearPregunta (itemP);
+						}
+					}
+
+				}
+				/*----------------------------------------*/
 
 				questionPres.Add (num);
 				num = num + 1;
