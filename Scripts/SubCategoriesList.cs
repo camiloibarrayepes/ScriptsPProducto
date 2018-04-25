@@ -7,10 +7,20 @@ using System.Text;
 using Random=UnityEngine.Random;
 using UnityEngine.SceneManagement;
 
+
+public class Pregunta
+{
+	public string id_question;
+	public string id_opcion;
+}
+
+
 public class SubCategoriesList : MonoBehaviour {
 
 	private string category_name;
 	private int category_id;
+	public GameObject prefabPregunta;
+	public Transform contenedorPregunta;
 
 	//para despligue de pregunta
 	public Text question;
@@ -23,6 +33,10 @@ public class SubCategoriesList : MonoBehaviour {
 	public Text op2;
 	public Text op3;
 
+	//buttons
+	public Button op1Button;
+	public Button op2Button;
+	public Button op3Button;
 
 	public Image image_subc;
 
@@ -88,6 +102,7 @@ public class SubCategoriesList : MonoBehaviour {
 
 	void Start()
 	{
+		Debug.Log("ID USUARIO " + LoginUserSQL.var_id);
 
 		Debug.Log ("ID INICIAL/ACTUAL" + SubCategoriesList.int_static_actual__id);
 
@@ -104,6 +119,28 @@ public class SubCategoriesList : MonoBehaviour {
 		GetAction (category_id);
 
 
+		/*----------------------------------------*/
+
+		List<Pregunta> LPregunta = new List<Pregunta> {
+			new Pregunta{ id_question = "1", id_opcion = "1"},
+			new Pregunta{ id_question = "2", id_opcion = "2"},
+			new Pregunta{ id_question = "1", id_opcion = "1"}
+		};
+
+		for (int op = 0; op < 3; op++){
+			
+			foreach (var itemP in LPregunta)
+			{
+				GameObject _pregunta = Instantiate (prefabPregunta, contenedorPregunta);
+				_pregunta.GetComponent<DetallesPregunta> ().CrearPregunta (itemP);
+			}
+
+		}
+
+
+		/*----------------------------------------*/
+
+
 	}
 
 	private void Awake()
@@ -116,7 +153,7 @@ public class SubCategoriesList : MonoBehaviour {
 
 	public void GetAction(int catid)
 	{
-		
+
 		WWWForm form = new WWWForm ();
 		form.AddField ("idPost", catid);
 
@@ -194,7 +231,7 @@ public class SubCategoriesList : MonoBehaviour {
 				num = 0;
 
 			} else {
-				
+
 				Debug.Log ("NUMERO" + num);
 				question.text = words [num];
 
@@ -244,7 +281,7 @@ public class SubCategoriesList : MonoBehaviour {
 
 	public void GoToSubCategories()
 	{
-		
+
 		SceneManager.LoadScene("subcategories");
 	}
 
