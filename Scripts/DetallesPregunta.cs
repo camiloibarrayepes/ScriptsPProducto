@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Text;
 
 public class DetallesPregunta : MonoBehaviour {
 
@@ -15,6 +17,17 @@ public class DetallesPregunta : MonoBehaviour {
 	public static int static_id_question_value;
 	public static string static_option_value;
 
+
+	//para captura de user id
+	public string userid;
+
+	//url insert data
+	string insert_data = "https://kapta.biz/pproducto/insert_data_question.php";
+
+	//variable para recibir nombre
+	private string getinsertdata;
+
+	private string dataInsert;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +54,28 @@ public class DetallesPregunta : MonoBehaviour {
 		option_value =  question.GetComponent<UnityEngine.UI.Text> ().text;
 		Debug.Log ("IDQUI " + id_question_value);
 		Debug.Log ("QUESTIONQUI " + option_value);
+		SceneManager.LoadScene("subcategories");
+		Debug.Log ("USER ID CAPTURADO " + LoginUserSQL.var_id);
+		Create (option_value);
+
+
+
+
 	}
+
+	public void Create(string option)
+	{
+		WWWForm form = new WWWForm ();
+		form.AddField ("optionPost", option_value);
+		form.AddField ("idUserPost", LoginUserSQL.var_id);
+		form.AddField ("idQuestionPost", id_question_value);
+		WWW www = new WWW (insert_data, form);
+	}
+
+				
+			
+
+
+
 
 }
