@@ -50,7 +50,7 @@ public class SceneManagerScript : MonoBehaviour {
 		//Envio de consesionario
 		Value = Nombre.GetComponent<UnityEngine.UI.Text> ().text;
 		Debug.Log ("CONSESIONARIO ELEGIDO: " + Value);
-		SceneManager.LoadScene("Inicio_poll");
+		SceneManager.LoadScene("WelcomeUser");
 	}
 
 

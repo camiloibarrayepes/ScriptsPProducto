@@ -11,6 +11,10 @@ public class RegisterSQLUser : MonoBehaviour {
 	public InputField inputPass;
 	public GameObject message;
 
+	public static string var_id_register;
+
+	public Text anuncio;
+
 
 	string CreateUserURL = "https://kapta.biz/pproducto/registerUser.php";
 
@@ -26,6 +30,7 @@ public class RegisterSQLUser : MonoBehaviour {
 	{
 		
 		CreateUser (inputNombre.text, inputEmail.text, inputPass.text);
+		var_id_register = inputNombre.text;
 	}
 
 
@@ -46,13 +51,24 @@ public class RegisterSQLUser : MonoBehaviour {
 	IEnumerator WaitForRequest(WWW www)
 	{
 		yield return www;
+		if (www.text == "falta_nombre") {
+			editMessage ("Ingresa un nombre");
+		}
 		if (www.text == "REGISTRO") {
-			SceneManager.LoadScene("WelcomeUser");
+			Debug.Log ("REGISTRO");
+			SceneManager.LoadScene("LoginUser");
 		} else {
-			ShowMessage ();
+			editMessage ("Usuario ya registrado");
 		}
 		Debug.Log ("LOGCAMILO" + www.text);
 	}
+
+	public void editMessage(string mess)
+	{
+		anuncio.text = mess;
+		ShowMessage ();
+	}
+
 
 	public void ShowMessage()
 	{

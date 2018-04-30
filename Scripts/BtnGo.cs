@@ -62,4 +62,9 @@ public class BtnGo : MonoBehaviour {
 		SceneManager.LoadScene ("subcategories");
 	}
 
+	public void go_menu()
+	{
+		SceneManager.LoadScene ("Menu");
+	}
+
 }

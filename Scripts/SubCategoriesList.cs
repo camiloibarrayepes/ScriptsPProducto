@@ -42,6 +42,16 @@ public class SubCategoriesList : MonoBehaviour {
 	public Image image_subc;
 
 
+	/*------ TERMINAR ENCUESTA --------------*/
+	string urlPoll = "https://kapta.biz/pproducto/insert_data_poll.php";
+
+	private string dataUser;
+
+	public string redirect;
+
+	public int iduserget;
+	/*-----------------------------------------*/
+
 
 	//url consulta url name
 	string get_name = "https://kapta.biz/pproducto/get_name_category.php";
@@ -128,6 +138,29 @@ public class SubCategoriesList : MonoBehaviour {
 	} 
 
 
+	/* --------- TERMINAR LA ENCUESTA ---------------- */
+
+	public void CreatePoll()
+	{
+		WWWForm form = new WWWForm ();
+		iduserget = Int32.Parse (LoginUserSQL.var_id);
+		//envio el id de usuario y me devuelve el campo poll 1 o 0
+		form.AddField ("idUserPost", iduserget);
+		WWW wwwstate = new WWW (urlPoll, form);
+
+		StartCoroutine (request (wwwstate));
+	}
+
+	IEnumerator request(WWW wwwstate)
+	{
+		yield return wwwstate;
+		dataUser = wwwstate.text;
+		Debug.Log ("INSERT POLL " + dataUser);
+		//int m = Int32.Parse (dataUser);
+
+	}
+
+	/*------------------------------------------------------*/
 
 
 	public void GetAction(int catid)
@@ -223,6 +256,7 @@ public class SubCategoriesList : MonoBehaviour {
 
 				if (camilo == cantCategorias) {
 					Debug.Log ("GRACIAS POR RESPONDER");
+					CreatePoll ();
 					SceneManager.LoadScene ("Gracias");
 				} else {
 					static_category_id = static_category_id + 1;

@@ -81,7 +81,7 @@ public class LoginUserSQL : MonoBehaviour {
 
 			if (var_access == "acceso") {
 				Debug.Log ("INGRESO CORRECTO");
-				SceneManager.LoadScene("WelcomeUser");
+				SceneManager.LoadScene("ListConsesionario");
 			}
 
 			Debug.Log ("ACESS " + var_access);
