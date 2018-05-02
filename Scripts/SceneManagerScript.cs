@@ -9,6 +9,9 @@ public class SceneManagerScript : MonoBehaviour {
 	//Declaro variable Static Value para ser enviada
 	public static string Value;
 	public static string CategoryValue;
+
+	public static string nombre_concesionario;
+
 	public Text Nombre;
 	public Text NameCategory;
 	public Text id_category;
@@ -49,6 +52,7 @@ public class SceneManagerScript : MonoBehaviour {
 	{
 		//Envio de consesionario
 		Value = Nombre.GetComponent<UnityEngine.UI.Text> ().text;
+		nombre_concesionario = Nombre.GetComponent<UnityEngine.UI.Text> ().text;
 		Debug.Log ("CONSESIONARIO ELEGIDO: " + Value);
 		SceneManager.LoadScene("WelcomeUser");
 	}

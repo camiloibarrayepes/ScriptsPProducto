@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class BtnGo : MonoBehaviour {
 
-
 	// Use this for initialization
 	void Start () {
 		
@@ -65,6 +64,17 @@ public class BtnGo : MonoBehaviour {
 	public void go_menu()
 	{
 		SceneManager.LoadScene ("Menu");
+	}
+
+	public void logout()
+	{
+		LoginUserSQL.var_name = "0";
+		SceneManager.LoadScene ("LoginUser");
+	}
+
+	public void solicitarAsesor()
+	{
+		SceneManager.LoadScene ("SolicitarAsesor");
 	}
 
 }

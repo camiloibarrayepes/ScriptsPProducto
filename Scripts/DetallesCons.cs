@@ -10,6 +10,7 @@ public class DetallesCons : MonoBehaviour {
 	public Button button;
 
 
+
 	// Use this for initialization
 	void Start () {
 
@@ -19,5 +20,6 @@ public class DetallesCons : MonoBehaviour {
 	public void Crear(Consesionarios consesionario) {
 		Nombre.text = consesionario.Nombre;
 		Imagen.sprite = consesionario.Imagen;
+
 	}
 }

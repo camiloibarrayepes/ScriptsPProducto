@@ -63,13 +63,15 @@ public class RegisterSQLAsesor : MonoBehaviour {
 			editMessage ("Ingresa un email");
 		} else if (www.text == "PASS") {
 			editMessage ("Ingresa una contraseña");
-		} else if (www.text == "CODIGO") {
+		} else if (www.text == "CODIGOFALTA") {
 			editMessage ("Ingresa un codigo");
 		} else if (www.text == "REGISTRO") {
 			Debug.Log ("REGISTRO");
-			SceneManager.LoadScene("login");
+			SceneManager.LoadScene ("login");
 		} else if (www.text == "NO") {
 			editMessage ("Usuario ya registrado");
+		} else if (www.text == "CODIGO") {
+			editMessage ("Código no válido");
 		}
 
 		Debug.Log ("LOGCAMILO" + www.text);
