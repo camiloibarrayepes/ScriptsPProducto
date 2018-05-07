@@ -77,4 +77,9 @@ public class BtnGo : MonoBehaviour {
 		SceneManager.LoadScene ("SolicitarAsesor");
 	}
 
+	public void loginAsesor()
+	{
+		SceneManager.LoadScene ("login");
+	}
+
 }

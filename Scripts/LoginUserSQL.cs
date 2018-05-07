@@ -65,6 +65,8 @@ public class LoginUserSQL : MonoBehaviour {
 
 		userLogin = www.text;
 
+		Debug.Log ("RESULTADO" + userLogin);
+
 		if (userLogin == "falta_email") {
 			editMessage ("Ingresa un email");
 		} else if (userLogin == "falta_pass") {

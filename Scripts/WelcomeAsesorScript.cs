@@ -52,16 +52,23 @@ public class WelcomeAsesorScript : MonoBehaviour {
 
 	public void logout()
 	{
+		Debug.Log ("IDASESORGET " + asesor_id);
 		WWWForm form = new WWWForm ();
 		form.AddField ("idPost", asesor_id);
-		WWW wwwstateasesor = new WWW (queryConcesionario, form);
+		WWW wwwstateasesor = new WWW (Logout, form);
 		StartCoroutine (getConcesionario (wwwstateasesor));
+		SceneManager.LoadScene("login");
 	}
 
 	IEnumerator logout(WWW wwwstateasesor)
 	{
 		yield return wwwstateasesor;
 		Debug.Log ("LOGOUT" + wwwstateasesor.text);
+	}
+
+	public void verSolicitudes()
+	{
+		SceneManager.LoadScene("VerSolicitudes");
 	}
 
 

@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class menuScript : MonoBehaviour {
 
 	public string concesionario_elegido;
-
+	public string user_id;
 	string getAsesores = "https://kapta.biz/pproducto/get_asesores_from_idcon.php";
 
 	// Use this for initialization
@@ -34,8 +34,12 @@ public class menuScript : MonoBehaviour {
 		Debug.Log ("RESULTADO ASESORES " + wwwstate.text);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void logoutUserF()
+	{
+		SceneManager.LoadScene("LoginUser");
+		LoginUserSQL.var_id = "0";
+
 	}
+
+
 }
