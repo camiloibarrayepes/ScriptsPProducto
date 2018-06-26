@@ -59,7 +59,8 @@ public class consultaAsesor : MonoBehaviour {
 						id_usuario_consulta = subwordsConsultas [0],  
 						Textoconsulta = subwordsConsultas [1], 
 						Usuario = subwordsConsultas [2], 
-						pregunta = subwordsConsultas[3] }
+						pregunta = subwordsConsultas[3] 
+						}
 					};
 
 					foreach (var itemCon in LConsul) {
@@ -67,7 +68,6 @@ public class consultaAsesor : MonoBehaviour {
 						_consulta.GetComponent<DetallesConsulta> ().CrearConsutla (itemCon);
 					}
 				}
-			
 
 		}
 

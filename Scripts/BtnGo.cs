@@ -82,4 +82,9 @@ public class BtnGo : MonoBehaviour {
 		SceneManager.LoadScene ("login");
 	}
 
+	public void RegisterAsesor()
+	{
+		SceneManager.LoadScene ("RegisterUserSQLAsesor");
+	}
+
 }

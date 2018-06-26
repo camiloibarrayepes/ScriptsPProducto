@@ -21,8 +21,10 @@ namespace Assets.SimpleAndroidNotifications
 
 		public void crear ()
 		{
+			Debug.Log("ID ASESOR " + LoginAsesorSQL.asesor_var_id);
+			Debug.Log ("ID CONCESIONARIO " + LoginAsesorSQL.asesor_var_id_c);
 			WWWForm form = new WWWForm ();
-			form.AddField ("nombrePost", "camilo");
+			form.AddField ("idConcesionario", LoginAsesorSQL.asesor_var_id_c);
 			WWW www = new WWW (CreateUserURL, form);
 			StartCoroutine (requestw (www));
 			//Debug.Log ("CANTIDAD " + cantidad);
